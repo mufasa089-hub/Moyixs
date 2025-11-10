@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Te Amo Mi Mamuchín 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Arial', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  touch-action: manipulation;
+  background: radial-gradient(ellipse at bottom, #1a0a2a 0%, #4d004d 100%);
+  position: relative;
+}
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: twinkle 2s infinite alternate;
+}
+@keyframes twinkle {
+  0% {opacity:0.2; transform:scale(1);}
+  50% {opacity:1; transform:scale(1.3);}
+  100% {opacity:0.2; transform:scale(1);}
+}
+#content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: #fff0ff;
+}
+#message {
+  font-size: 44px;
+  font-weight: 600;
+  text-shadow: 0 0 6px #ff69b4, 0 0 12px #ff1493, 0 0 18px #ff77ff;
+  margin-bottom: 20px;
+  animation: pulseGlow 1.5s infinite alternate;
+}
+@keyframes pulseGlow {
+  0% {transform:scale(1); text-shadow:0 0 6px #ff69b4,0 0 12px #ff1493,0 0 18px #ff77ff;}
+  50% {transform:scale(1.12); text-shadow:0 0 12px #ff69b4,0 0 18px #ff1493,0 0 24px #ff77ff;}
+  100% {transform:scale(1); text-shadow:0 0 6px #ff69b4,0 0 12px #ff1493,0 0 18px #ff77ff;}
+}
+#poema {
+  font-size: 20px;
+  background: rgba(255,255,255,0.1);
+  padding: 16px;
+  border-radius: 18px;
+  max-width: 90%;
+  min-height: 80px;
+  white-space: pre-line;
+  margin-bottom: 12px;
+  color: #ffe6f2;
+  box-shadow: 0 0 10px rgba(255,182,193,0.5);
+}
+.heart, .spark, .msg {
+  position: absolute;
+  pointer-events: none;
+}
+.heart {font-size: 24px; animation: floatUp 1.5s ease-out forwards;}
+@keyframes floatUp {0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-140px) scale(1.5);}}
+.spark {width:8px; height:8px; border-radius:50%; background: radial-gradient(circle,#fff0ff,#ff69b4); opacity:0.7; animation: sparkle 1s linear forwards;}
+@keyframes sparkle {0%{transform:scale(0);opacity:0.7;}50%{transform:scale(1.2);opacity:1;}100%{transform:scale(0);opacity:0;}}
+.msg {font-size:16px; font-weight:600; animation: floatMsg 2s ease-out forwards;}
+@keyframes floatMsg {0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-120px) scale(1.2);}}
+</style>
+</head>
+<body>
+
+<audio id="music" loop>
+  <source src="music/romantic.mp3" type="audio/mpeg">
+</audio>
+
+<div id="content">
+  <div id="message">💖 TE AMO MI MAMUCHÍN 💖</div>
+  <div id="poema">Toca la pantalla para leer un poema 💕</div>
+</div>
+
+<script>
+// Crear estrellas
+for(let i=0;i<120;i++){
+  const star=document.createElement('div');
+  star.className='star';
+  const size=Math.random()*3+1;
+  star.style.width=`${size}px`;
+  star.style.height=`${size}px`;
+  star.style.left=`${Math.random()*window.innerWidth}px`;
+  star.style.top=`${Math.random()*window.innerHeight}px`;
+  star.style.animationDuration=`${Math.random()*2+1}s`;
+  document.body.appendChild(star);
+}
+
+// Poemas y mensajes
+const poemas=[
+"Mi Mamuchín, tu sonrisa ilumina mi día,\ncomo un sol que nunca se apaga.",
+"Mi princesa, cada latido de mi corazón\nsusurra tu nombre y mi amor eterno.",
+"Mi hermoso amanecer, tus ojos son estrellas\nque guían mi alma hacia la felicidad.",
+"Mi cielo, eres mi refugio y mi alegría,\nmi razón de cada pensamiento dulce."
+];
+const mensajes=["Te amo infinito 💕","Siempre tú y yo 💖","Eres mi mundo 🌟","Mi corazón es tuyo 💓","Eres mi alegría 😍"];
+
+function randomColor(){const colors=['#ff69b4','#ff1493','#ffb6c1','#ff77ff','#ff00ff','#ff85c1'];return colors[Math.floor(Math.random()*colors.length)];}
+function crearCorazon(x,y){const heart=document.createElement('div');heart.className='heart';heart.style.left=x+'px';heart.style.top=y+'px';heart.style.color=randomColor();heart.style.fontSize=(16+Math.random()*22)+'px';document.body.appendChild(heart);setTimeout(()=>heart.remove(),1500);}
+function crearSpark(x,y){const spark=document.createElement('div');spark.className='spark';spark.style.left=x+'px';spark.style.top=y+'px';document.body.appendChild(spark);setTimeout(()=>spark.remove(),1000);}
+function crearMensaje(x,y){const msg=document.createElement('div');msg.className='msg';msg.style.left=x+'px';msg.style.top=y+'px';msg.style.color=randomColor();msg.innerText=mensajes[Math.floor(Math.random()*mensajes.length)];document.body.appendChild(msg);setTimeout(()=>msg.remove(),2000);}
+
+// Animación letra por letra respetando espacios
+function mostrarPoemaAnimado(poemaText){
+  const poemaDiv = document.getElementById('poema');
+  poemaDiv.innerHTML = '';
+  const lineas = poemaText.split('\n');
+  let index = 0;
+
+  function escribirLinea() {
+    if(index < lineas.length){
+      let p = document.createElement('div');
+      p.style.whiteSpace = 'pre'; // <-- importante para respetar espacios
+      poemaDiv.appendChild(p);
+      let texto = lineas[index];
+      let charIndex = 0;
+      const interval = setInterval(()=>{
+        if(charIndex < texto.length){
+          p.innerText += texto[charIndex];
+          charIndex++;
+        } else {
+          clearInterval(interval);
+          index++;
+          setTimeout(escribirLinea, 200);
+        }
+      }, 40);
+    }
+  }
+
+  escribirLinea();
+}
+
+// Reproducir música en móviles y PC
+function reproducirMusica() {
+    const music = document.getElementById('music');
+    if (music.paused) {
+        music.play().catch(() => { console.log("Toca la pantalla para reproducir la música 🎵"); });
+    }
+}
+
+// Eventos de interacción
+document.body.addEventListener('click',(e)=>{
+    reproducirMusica();
+    const poema=poemas[Math.floor(Math.random()*poemas.length)];
+    mostrarPoemaAnimado(poema);
+
+    for(let i=0;i<5;i++){const offsetX=(Math.random()-0.5)*100; const offsetY=(Math.random()-0.5)*50; crearCorazon(e.clientX+offsetX,e.clientY+offsetY);}
+    for(let i=0;i<8;i++){const offsetX=(Math.random()-0.5)*150; const offsetY=(Math.random()-0.5)*80; crearSpark(e.clientX+offsetX,e.clientY+offsetY);}
+    for(let i=0;i<3;i++){const offsetX=(Math.random()-0.5)*120; const offsetY=(Math.random()-0.5)*60; crearMensaje(e.clientX+offsetX,e.clientY+offsetY);}
+});
+
+// También en móviles con touchstart
+document.body.addEventListener('touchstart', (e)=>{reproducirMusica();}, {once:true});
+</script>
+
+</body>
+</html>
